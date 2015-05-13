@@ -6,7 +6,7 @@ A strong, flexible password generator written in Python.
 
 ## Features
 
-* Choose from any combination of character sets including lowercase, uppwercase,
+* Choose from any combination of character sets including lowercase, uppercase,
 digits, punctuation, space, hexadecimal, base64, hiragana, katakana and jouyou
 kanji
 * Measures generated password strength in bits of information entropy and
