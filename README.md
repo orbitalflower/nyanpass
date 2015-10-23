@@ -23,7 +23,7 @@ information
 
 ## Changes
 
-* See [CHANGELOG](CHANGELOG).
+* See [CHANGELOG](CHANGELOG.md).
 
 ## Help
 
