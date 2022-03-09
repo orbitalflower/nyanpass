@@ -10,7 +10,7 @@ from textwrap import fill, wrap
 """
 
 # Meta
-VERSION = "2.0"
+VERSION = "2.1"
 
 # Defaults
 DEFAULT_VERBOSITY = True
@@ -21,11 +21,11 @@ DEFAULT_LENGTH = {"char": 28, "word": 4, "bit": 128, "byte": 16, "help": 0,
 
 # Supported charsets, including aliases
 SUPPORTED_CHARSETS = ["all", "alphabetic", "alphanumeric", "alnum", "b64",
-  "base64", "d", "digits", "h", "hex", "hiragana", "j", "japanese", "k",
-  "kanji", "hexadecimal", "katakana", "l", "letters", "lower", "lowercase",
-  "m", "morse", "morsecode", "code", "m64", "morse64", "numbers", "numeric",
-  "n", "p", "punctuation", "s", "space", "spaces", "strong", "symbols", "u",
-  "upper", "uppercase", "x"]
+  "base64", "d", "digit", "digits", "h", "hex", "hiragana", "j", "japanese",
+  "k", "kanji", "hexadecimal", "katakana", "l", "letters", "lower",
+  "lowercase", "m", "morse", "morsecode", "code", "m64", "morse64",
+  "numbers", "numeric", "n", "p", "punctuation", "s", "space", "spaces",
+  "strong", "symbols", "u", "upper", "uppercase", "x"]
 
 def main():
   # Parse input
@@ -77,7 +77,10 @@ def main():
 
   # Set defaults
   if mode == "":
-    mode = DEFAULT_MODE
+    if length>0:
+      mode = "char" # so e.g. "16 digits" works as expected
+    else:
+      mode = DEFAULT_MODE
   if len(cs) < 1:
     cs = DEFAULT_CHARSET
   if length < 1:
@@ -132,11 +135,11 @@ def charset_by_alias(arg):
     
 def show_help(msg=None):
   if msg:
-    print msg
+    print(msg)
 
-  print "Nyanpass {}, a strong password generator.".format(VERSION)
+  print("Nyanpass {}, a strong password generator.".format(VERSION))
 
-  print """Usage: nyanpass.py [<N> chars|bits] [CHARSET...] [OPTIONS...]
+  print("""Usage: nyanpass.py [<N> chars|bits] [CHARSET...] [OPTIONS...]
 
  Example:
   nyanpass.py 16 chars lowercase uppercase digits
@@ -150,7 +153,7 @@ def show_help(msg=None):
   quiet       Output only the password{}
   help        This help
   very help   Extended help, extra modes, abbreviations""".format(
-    " (default)"*DEFAULT_VERBOSITY, " (default)"*(not DEFAULT_VERBOSITY))
+    " (default)"*DEFAULT_VERBOSITY, " (default)"*(not DEFAULT_VERBOSITY)))
 
   exit()
 
@@ -160,9 +163,9 @@ def cat_charsets(cs):
   d = sorted(cs)
   if len(d) > 2:
     d[-1] = "and " + d[-1]
-    d = string.join(d, ", ")
+    d = ", ".join(d)
   else:
-    d = string.join(d, " and ")
+    d = " and ".join(d)
   return d
 
 def show_extra_information(msg):
@@ -290,7 +293,7 @@ can break WEP in seconds. Switch your device to WPA or WPA2 immediately and
 generate a new WPA key."""
 
   if msg in ["very-help", "wpa", "wep"]:
-    print messages[msg]
+    print(messages[msg])
     exit()
 
 def generate_password(mode=DEFAULT_MODE, charsets=DEFAULT_CHARSET,
@@ -307,9 +310,9 @@ def generate_password(mode=DEFAULT_MODE, charsets=DEFAULT_CHARSET,
   charset = ""
   for cs in charsets:
     if cs == "uppercase":
-      charset += string.uppercase
+      charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     elif cs == "lowercase":
-      charset += string.lowercase
+      charset += "abcdefghijklmnopqrstuvwxyz"
     elif cs == "digits":
       charset += string.digits
     elif cs == "punctuation":
@@ -561,7 +564,7 @@ def generate_password(mode=DEFAULT_MODE, charsets=DEFAULT_CHARSET,
     target_length = length
     target_entropy = None
   else:
-    print "wait what"
+    print("wait what")
 
   # generate password
   pw = ""
@@ -571,7 +574,7 @@ def generate_password(mode=DEFAULT_MODE, charsets=DEFAULT_CHARSET,
   if verbose:
     actual_entropy = log(len(charset)**target_length,2)
 
-    strength_rating = int(actual_entropy)/16
+    strength_rating = int(actual_entropy/16)
     if strength_rating > 16:
       strength_rating = 16
 
@@ -629,27 +632,27 @@ built from something other than matter and occupy something other than space."
  -- Bruce Schneier, Applied Cryptography""", # 256
     ]
 
-    print fill("Generating a {} {}{} password from {} (character set size {}{}).".format(length,
+    print(fill("Generating a {} {}{} password from {} (character set size {}{}).".format(length,
       mode,
       " or greater" * (mode in ["bit", "byte"]),
       cat_charsets(charsets), len(charset),
       (", password length {}".format(target_length))*(mode in["bit", "byte"])
-      ), 79)
+      ), 79))
 
-    print u"Your password is: {}".format(pw)
+    print(u"Your password is: {}".format(pw))
     if not space_forbidden:
-      print
+      print("")
       pw_chunks = []
       for n in range(0,len(pw), 4):
         pw_chunks.append(pw[n:n+4])
-      for line in wrap(string.join(pw_chunks), 76):
-        print "  " + line
-      print
+      for line in wrap(" ".join(pw_chunks), 76):
+        print("  " + line)
+      print("")
 
-    print "Strength: {:.2f} bits; {}".format(actual_entropy, strengths[strength_rating])
+    print("Strength: {:.2f} bits; {}".format(actual_entropy, strengths[int(strength_rating)]))
     
   else: # not verbose
-    print pw
+    print(pw)
 
 if __name__ == "__main__":
   main()
