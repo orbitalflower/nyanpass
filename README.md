@@ -15,7 +15,7 @@ describes its resistance to brute force attack in real-world terms
 in bits
 * `quiet` mode for piping the password to other programs, `verbose` for more
 information
-* Uses `random.SystemRandom()` for good randomness
+* Uses `secrets.choice()` for good randomness
 
 ## Usage
 
