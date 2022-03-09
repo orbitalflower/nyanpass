@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import random, string, sys
+import secrets, string, sys
 from math import log, ceil
 from textwrap import fill, wrap
 
@@ -10,7 +10,7 @@ from textwrap import fill, wrap
 """
 
 # Meta
-VERSION = "2.1"
+VERSION = "2.2"
 
 # Defaults
 DEFAULT_VERBOSITY = True
@@ -41,7 +41,7 @@ def main():
       mode = "bit"
     elif arg in ["bytes", "byte", "B"]:
       mode = "byte"
-    elif arg in ["words", "words", "xkcd", "xkcdpass", "diceware", "w"]:
+    elif arg in ["word", "words", "xkcd", "xkcdpass", "diceware", "w"]:
       mode = "word"
     elif arg in ["chars", "char", "chr", "chrs", "c", "characters", "length", "len", "long"]:
       mode = "char"
@@ -92,7 +92,7 @@ def main():
   if mode in ["bit", "byte", "char"]:
     generate_password(mode, cs, length, verbose)
   elif mode == "word":
-    show_help("OOPS: Word mode not implemented yet.")
+    print(f"Word mode not yet implemented.\nRecommend DuckDuckGo for this purpose, e.g.:\n<https://duckduckgo.com/?q=passphrase+{length}+words>")
   elif mode == "wpa":
     generate_password("char", {"lowercase", "digits"}, length, verbose)
     show_extra_information("wpa")
@@ -215,7 +215,8 @@ MODES
   specify in bytes.
 
  Word mode (e.g. nyanpass.py 4 words)
-  Not yet implemented.
+  Not yet implemented. Recommend DuckDuckGo for this purpose, e.g.:
+  <https://duckduckgo.com/?q=passphrase+6+words>
 
 OPTIONS
  verbose     Gives interesting information on the strength of your password.
@@ -263,8 +264,9 @@ SECURITY
  Human-selected passwords tend to fall into highly predictable patterns and are
  not as secure as they appear. Machine-generated passwords are more random.
 
- This program generates passwords with random.SystemRandom().choice(charset),
- which is believed to be sufficiently random to generate strong passwords.
+ This program generates passwords with secrets.choice(), which is stated to
+ be sufficiently random to generate cryptographically strong passwords.
+ See <https://docs.python.org/3/library/secrets.html>.
 
  Where two or more character sets contain the same characters, each appears
  only once in the set used by the random generator, and is evenly likely to
@@ -569,7 +571,7 @@ def generate_password(mode=DEFAULT_MODE, charsets=DEFAULT_CHARSET,
   # generate password
   pw = ""
   for n in range(1,target_length+1):
-    pw += random.SystemRandom().choice(charset)
+    pw += secrets.choice(charset)
 
   if verbose:
     actual_entropy = log(len(charset)**target_length,2)
@@ -595,38 +597,38 @@ Can be broken by a cutting edge exascale supercomputer within ten years.""", # 8
 Unbreakable even by the supercomputers of 2036.""", # 96
 """EXTREMELY STRONG.
 Probably unbreakable even by supercomputers in 2056.""", # 112
-"""UNBREAKABLE.
+"""UNBRUTEFORCEABLE.
 "128-bit classical computer brute force searches are impossible."
  -- Bruce Schneier""", # 128
-"""UNBREAKABLE.
+"""UNBRUTEFORCEABLE.
 "128-bit classical computer brute force searches are impossible."
  -- Bruce Schneier""", # 144
-"""UNBREAKABLE.
+"""UNBRUTEFORCEABLE.
 "128-bit classical computer brute force searches are impossible."
  -- Bruce Schneier""", # 160
-"""UNBREAKABLE.
+"""UNBRUTEFORCEABLE.
 "128-bit classical computer brute force searches are impossible."
  -- Bruce Schneier""", # 176
-"""MATHEMATICALLY UNBREAKABLE.
+"""MATHEMATICALLY UNBRUTEFORCEABLE.
 "If we built a Dyson sphere around the sun and captured all its energy for 32
-years, without any loss, we could power a computer to counter up to 2^192."
+years, without any loss, we could power a computer to count up to 2^192."
  -- Bruce Schneier, Applied Cryptography""", # 192
-"""COSMICALLY UNBREAKABLE.
+"""COSMICALLY UNBRUTEFORCEABLE.
 "A typical supernova releases something like 10^51 ergs... If all of this
 energy could be channeled into a single orgy of computation, a 219-bit counter
 could be cycled through all of its states."
  -- Bruce Schneier, Applied Cryptography""", # 208
-"""COSMICALLY UNBREAKABLE.
+"""COSMICALLY UNBRUTEFORCEABLE.
 "A typical supernova releases something like 10^51 ergs... If all of this
 energy could be channeled into a single orgy of computation, a 219-bit counter
 could be cycled through all of its states."
  -- Bruce Schneier, Applied Cryptography""", # 224
-"""COSMICALLY UNBREAKABLE.
+"""COSMICALLY UNBRUTEFORCEABLE.
 "A typical supernova releases something like 10^51 ergs... If all of this
 energy could be channeled into a single orgy of computation, a 219-bit counter
 could be cycled through all of its states."
  -- Bruce Schneier, Applied Cryptography""", # 240
-"""UNIVERSALLY, PHYSICALLY UNBREAKABLE.
+"""UNIVERSALLY, PHYSICALLY UNBRUTEFORCEABLE.
 "Brute force attacks against 256-bit keys will be infeasible until computers are
 built from something other than matter and occupy something other than space."
  -- Bruce Schneier, Applied Cryptography""", # 256

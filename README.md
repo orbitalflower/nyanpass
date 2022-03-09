@@ -21,11 +21,17 @@ information
 
 `python nyanpass.py 20 chars lower upper digits`
 
-## Changes
-
-* See [CHANGELOG](CHANGELOG.md).
-
 ## Help
 
 * `python nyanpass.py help`
 * `python nyanpass.py very help`
+
+## Changes
+
+* See [CHANGELOG](CHANGELOG.md).
+
+## Disclaimer
+
+I'm not a cryptographer. However, the documentation for the Python module
+[secrets](https://docs.python.org/3/library/secrets.html) promises that it's
+suitable for for generating cryptographically strong passwords.

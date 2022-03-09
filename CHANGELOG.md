@@ -21,3 +21,17 @@ japanese).
 dashes). Useful to add two easily-typed punctuation characters
 * Tidier verbose output.
 * Now easier to import as a module into other programs.
+
+v2.1 --- 2 May 2016
+
+* Forgot to upload this one
+* Update to Python 3
+* Make char length the default specifier
+* Allow "digit" specifier
+
+v2.2 --- 9 Mar 2021
+
+* Switched from random.SystemRandom().choice() to secrets.choice().
+* Changed the word "unbreakable" to "unbruteforceable".
+* Allow "word" specifier
+* Recommend DuckDuckGo for unimplemented "word" mode.
