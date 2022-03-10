@@ -92,7 +92,7 @@ def main():
   if mode in ["bit", "byte", "char"]:
     generate_password(mode, cs, length, verbose)
   elif mode == "word":
-    print(f"Word mode not yet implemented.\nRecommend DuckDuckGo for this purpose, e.g.:\n<https://duckduckgo.com/?q=passphrase+{length}+words>")
+    print("Word mode not yet implemented.\nRecommend DuckDuckGo for this purpose, e.g.:\n<https://duckduckgo.com/?q=passphrase+{}+words>".format(length))
   elif mode == "wpa":
     generate_password("char", {"lowercase", "digits"}, length, verbose)
     show_extra_information("wpa")
